@@ -174,8 +174,17 @@ const episodeData = [
 ]
 
 test('render episodes', async () => {
+
+    //check that episode data is not yet loaded
+    expect(screen.queryByText(/Chapter One: The Vanishing of Will Byers/i)).toBeNull()
+
     const { rerender } = render(<Episodes episodes={episodeData} />)
 
     //check if selected season renders episodes
     const episode = await waitFor(() => screen.findByText(/Chapter One: The Vanishing of Will Byers/i))
+
+    expect(episode).toBeInTheDocument()
+
+    const allData = await waitFor(() => screen.findAllByTestId(/episodes/i))
+    expect(allData).toHaveLength(1)
 })
